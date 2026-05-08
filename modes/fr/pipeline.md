@@ -9,7 +9,41 @@ Traite les URLs d'offres accumulees dans `data/pipeline.md`. Le candidat ajoute 
    a. Calculer le prochain `REPORT_NUM` sequentiel (lire `reports/`, prendre le numero le plus eleve + 1)
    b. **Extraire l'offre** avec Playwright (`browser_navigate` + `browser_snapshot`) -> WebFetch -> WebSearch
    c. Si l'URL n'est pas accessible -> marquer comme `- [!]` avec une note et continuer
-   d. **Executer l'auto-pipeline complet** : Evaluation A-F -> Report .md -> PDF (si score >= 3.0) -> Tracker
+   d. **Executer l'auto-pipeline complet** :
+   Evaluation A-F -> Report .md -> PDF (si score >= 3.5) -> Tracker
+   Avant l'évaluation A-F, détecter automatiquement le domaine principal de l'offre :
+   - IT / Support / Helpdesk
+   - Web / WordPress / CMS
+   - Hébergement / DNS / Infrastructure légère
+   - Photographie / Communication
+   - Restauration / Cuisine
+   - Gestion opérationnelle
+   - Médico-social / Collectivité
+   - Hybride
+   Adapter ensuite automatiquement :
+   - les proof points priorisés
+   - le résumé CV
+   - les expériences mises en avant
+   - les expériences minimisées
+   - le ton de la lettre de motivation
+	
+	Ne pas mélanger inutilement les expériences restauration et IT/web.
+   - Si l'offre est IT/web :
+     réduire fortement les expériences restauration sauf si elles apportent :
+     - gestion d'équipe
+     - relation client
+     - gestion opérationnelle
+     - autonomie
+     - résistance au stress
+   - Si l'offre est restauration :
+     réduire fortement les expériences IT/web sauf si elles apportent:
+     - organisation
+     - communication
+     - gestion
+     - digitalisation
+     - réseaux sociaux
+   - Si l'offre est photographie ou communication :
+     mettre en avant portfolio, WordPress, publication web et communication visuelle.
    e. **Deplacer de "En attente" vers "Traitees"** : `- [x] #NNN | URL | Entreprise | Role | Score/5 | PDF oui/non`
 3. **Si 3+ URLs en attente**, lancer des agents en parallele (Agent tool avec `run_in_background`) pour maximiser la vitesse.
 4. **A la fin**, afficher un tableau recapitulatif :
@@ -17,6 +51,12 @@ Traite les URLs d'offres accumulees dans `data/pipeline.md`. Le candidat ajoute 
 ```
 | # | Entreprise | Role | Score | PDF | Action recommandee |
 ```
+Action recommandée possible :
+- "Postuler rapidement"
+- "Bon match mais CV à retravailler"
+- "Match partiel"
+- "Faible pertinence"
+- "Ne pas postuler"
 
 ## Format de pipeline.md
 
@@ -45,6 +85,41 @@ Traite les URLs d'offres accumulees dans `data/pipeline.md`. Le candidat ajoute 
 - **Prefixe `local:`** : Lire le fichier local. Exemple : `local:jds/linkedin-pm-ai.md` -> lire `jds/linkedin-pm-ai.md`
 - **Welcome to the Jungle / Indeed FR / APEC** : Portails francophones courants. Playwright gere bien les cookie banners
 - **France Travail (ex-Pole emploi)** : Offres structurees, bien lisibles par machine. WebFetch suffit generalement
+
+## Adaptation au marché suisse
+
+Par défaut, privilégier :
+- le marché suisse
+- les salaires suisses
+- les formulations suisses/francophones
+- les attentes RH suisses
+- les formats de CV suisses
+
+Éviter :
+- le ton startup américain
+- les formulations exagérées
+- les buzzwords inutiles
+- les lettres trop longues
+
+## Fiabilité et exactitude
+
+Ne jamais :
+- inventer un diplôme
+- inventer une responsabilité hiérarchique
+- inventer une certification
+- transformer une activité associative ou amateur en activité professionnelle
+- prétendre à une expertise senior en développement logiciel si elle n'est pas documentée
+
+## Portfolio et références réelles
+
+Quand pertinent, utiliser les éléments suivants comme preuves :
+- septanteneuf.com
+- photo.septanteneuf.com
+- tircourgevaux.com
+- administration WordPress
+- DNS / domaines / hébergement
+- photographie aviation et événementielle
+- communication associative
 
 ## Numerotation automatique
 
